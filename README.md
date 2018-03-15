@@ -1,2 +1,4 @@
 # dolchang-bot
-dolchang-bot for irc
+Hearthstone card Database bot (for Korean)
+
+한국인을 위한 하스스톤 카드 DB 봇입니다.
