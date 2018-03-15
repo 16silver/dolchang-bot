@@ -28,7 +28,7 @@ class IRC:
     def get_text(self):
         try:
             text=self.irc.recv(2048).decode("utf-8")  #receive the text
-        except OSError:
+        except:
             text = ""
  
         if text.find('PING') != -1:                      
