@@ -84,7 +84,6 @@ print ("Success")
  
 while 1:
     text = irc.get_text()
-      
     idx = text.find("PRIVMSG " + channel)
     if idx != -1:
         msg = text[idx+len("PRIVMSG " + channel + " :"):len(text)]
@@ -96,7 +95,11 @@ while 1:
             irc.send(channel, str(msg[5:len(msg)]))
             
         elif msg[0:len("bayoen " + nickname)] == "bayoen " + nickname:
-            break
+            if text[1:text.find("!")] == "I6silver":
+                break
+            else:
+                irc.send(channel, "bayoen " + text[1:text.find("!")])
+                irc.deopping(channel, text[1:text.find("!")])
         
         elif "하스스톤" in msg:
             irc.send(channel, innkeeper())
