@@ -39,3 +39,6 @@ class IRC:
         
     def opping(self, chan, name):
         self.irc.send(bytes("MODE " + chan + " +o " + name + "\n","utf-8"))
+        
+    def deopping(self, chan, name):
+        self.irc.send(bytes("MODE " + chan + " -o " + name + "\n","utf-8"))
