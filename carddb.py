@@ -135,8 +135,8 @@ while True:
                 else:
                     idx = line.find("공격력:")
                     if idx != -1:
-                        idx2 = line.find("생명력:")
-                        tmpdes = tmpdes + line[idx+len("공격력:"):idx2-1] + "/" + line[idx2+len("생명력:"):len(line)-2]
+                        idx2 = line.find("내구도:")
+                        tmpdes = tmpdes + line[idx+len("공격력:"):idx2-1] + "/" + line[idx2+len("내구도:"):len(line)-2]
                     else:
                         idx = line.find("효과:")
                         if idx != -1:
