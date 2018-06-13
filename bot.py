@@ -4,23 +4,21 @@ import os
 import random
 
 
-channel = "#16silver"
+channellist = []
 server = "irc.uriirc.org"
-nickname = "dolchang-bot"
+nickname = "botcheckingbot"
 
 irc = IRC()
-irc.connect(server, channel, nickname)
+irc.connect(server, nickname)
 
 def hssearch(word):
     nummode = 0
-    minus = 1
     thelist = []
     longnamelist = []
     if not word:
         return "usage: hs [num] <word>"
     if word[0] == "-":
-        minus = -1
-        if word[1].isnumeric():
+        if word[1].numeric():
             word = word[1:]
     if word[0:2] == "+ ":
         print(len(word))
@@ -57,11 +55,7 @@ def hssearch(word):
     elif nummode > 0:
         if len(thelist) < nummode:
             nummode = len(thelist)
-        if minus == -1:
-            nummode = -nummode
-        else:
-            nummode = nummode-1
-        return cardlist[thelist[nummode]].name + " - " + cardlist[thelist[nummode]].description
+        return cardlist[thelist[nummode-1]].name + " - " + cardlist[thelist[nummode-1]].description
     elif len(thelist) > 9:
         rtvalue = cardnamelist[thelist[0]]
         for j in thelist[1:5]:
@@ -84,25 +78,32 @@ print ("Success")
  
 while 1:
     text = irc.get_text()
-    idx = text.find("PRIVMSG " + channel)
-    if idx != -1:
-        msg = text[idx+len("PRIVMSG " + channel + " :"):len(text)]
-        print (msg)
-        if msg[0:3] == "hs ":
-            irc.send(channel, str(hssearch((msg[3:len(msg)]).strip())))
-        
-        elif msg[0:5] == "echo ":
-            irc.send(channel, str(msg[5:len(msg)]))
+    print(text)
+    for channel in channellist:
+        idx = text.find("PRIVMSG " + channel + " :")
+        if idx != -1:
+            msg = text[idx + len("PRIVMSG " + channel + " :"):len(text)]
+            print (msg)
+            if msg[0:3] == "hs ":
+                irc.send(channel, str(hssearch((msg[3:len(msg)]).strip())))
             
-        elif msg[0:len("bayoen " + nickname)] == "bayoen " + nickname:
-            if text[1:text.find("!")] == "I6silver":
+            elif msg[0:5] == "echo ":
+                irc.send(channel, str(msg[5:len(msg)]))
+                
+            elif msg[0:len("bayoen " + nickname)] == "bayoen " + nickname:
                 break
-            else:
-                irc.send(channel, "bayoen " + text[1:text.find("!")])
-                irc.deopping(channel, text[1:text.find("!")])
-        
-        elif "하스스톤" in msg:
-            irc.send(channel, innkeeper())
+            
+            elif "하스스톤" in msg:
+                irc.send(channel, innkeeper())
+    idx2 = text.find("INVITE " + nickname)
+    if idx2 != -1:
+        msg = text[idx2 + len("INVITE " + nickname + " :"):len(text)]
+        print (msg)
+        irc.join(msg)
+        msg = msg.replace("\r", "").replace("\n","")
+        if msg not in channellist:
+            channellist += [msg]
+        print(channellist)
     
     # idx2 = text.find("JOIN :" + channel)
     # if idx2 != -1:
