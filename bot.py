@@ -6,7 +6,7 @@ import random
 
 channellist = []
 server = "irc.uriirc.org"
-nickname = "laboratory_mouse"
+nickname = "dolchang-bot"
 
 irc = IRC()
 irc.connect(server, nickname)
